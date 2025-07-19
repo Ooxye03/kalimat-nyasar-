@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Putar ke Potret Dulu Ya!</title>
+  <style>
+    @font-face {
+      font-family: 'CafeMatcha';
+      src: url('fonts/CafeMatcha.ttf') format('truetype');
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'CafeMatcha', sans-serif;
+      background: linear-gradient(120deg, #f8d7dd, #f3c6c6);
+      background-size: 200% 200%;
+      animation: bg 10s ease infinite;
+      color: #5a2a2a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 30px;
+      transition: all 0.3s ease;
+    }
+
+    @keyframes bg {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .text-box {
+      font-size: 1.4em;
+      line-height: 1.8;
+      max-width: 90%;
+      transition: all 0.3s ease-in-out;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="text-box" id="notice">
+    layarnya di putar lagi ya cantik 🖤
+  </div>
+
+  <script>
+    const notice = document.getElementById("notice");
+
+    function redirectIfPortrait() {
+      if (window.innerHeight > window.innerWidth) {
+        const name = localStorage.getItem("username");
+        const dob = localStorage.getItem("dob");
+        if (name && dob) {
+          window.location.href = "surat.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      }
+    }
+
+    // Saat orientasi berubah
+    window.addEventListener("orientationchange", () => {
+      setTimeout(redirectIfPortrait, 500);
+    });
+
+    // Jaga-jaga kalau sudah portrait dari awal
+    window.addEventListener("load", () => {
+      redirectIfPortrait();
+    });
+
+    // Pesan tambahan setelah 30 detik
+    setTimeout(() => {
+      notice.innerHTML = "Ih... kamu ngeyel ya? 😠<br>Rico marah nih, masa disuruh muter aja nggak mau? 😤<br>Tapi... ah yaudah, kamu tetep lucu sih 😌🖤";
+    }, 30000);
+  </script>
+
+</body>
+</html>
