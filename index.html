@@ -141,19 +141,34 @@
   });
 
   function goToPassword() {
-    const name = document.getElementById("name").value.trim();
-    const dob = document.getElementById("dob").value;
+  const name = document.getElementById("name").value.trim();
+  const dob = document.getElementById("dob").value;
 
-    if (!name || !dob) {
-      alert("Nama dan tanggal lahir harus diisi!");
-      return;
-    }
+  if (!name || !dob) {
+    alert("Nama dan tanggal lahir harus diisi!");
+    return;
+  }
 
-    localStorage.setItem("username", name);
-    localStorage.setItem("dob", new Date(dob).toISOString());
+  const today = new Date();
+  const inputDate = new Date(dob);
+  const bdayThisYear = new Date(today.getFullYear(), inputDate.getMonth(), inputDate.getDate());
 
-    formPhase.style.display = "none";
-    passwordPhase.style.display = "block";
+  if (today.getDate() !== bdayThisYear.getDate() || today.getMonth() !== bdayThisYear.getMonth()) {
+    const nextBday = (today > bdayThisYear)
+      ? new Date(today.getFullYear() + 1, inputDate.getMonth(), inputDate.getDate())
+      : bdayThisYear;
+    const diffDays = Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
+
+    alert(`Hmm… ulang tahun kamu masih ${diffDays} hari lagi 😢\n\nSampai hari itu tiba, kamu belum bisa lanjut ke bagian selanjutnya ya.\n\nTapi Rico doain yang terbaik buat kamu dari sekarang 🫶`);
+    return;
+  }
+
+  // ✅ Jika lolos validasi ulang tahun
+  localStorage.setItem("username", name);
+  localStorage.setItem("dob", inputDate.toISOString());
+
+  formPhase.style.display = "none";
+  passwordPhase.style.display = "block";
   }
 
   function validatePassword() {
