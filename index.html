@@ -172,15 +172,34 @@
   }
 
   function validatePassword() {
+    window.addEventListener("orientationchange", () => {
+  const username = localStorage.getItem("username");
+  const dob = localStorage.getItem("dob");
+  const input = document.getElementById("password")?.value?.trim();
+
+  if (username && dob && input === "berbahagialah" && window.innerHeight > window.innerWidth) {
+    window.location.href = "surat.html";
+  }
+});
+    
     const input = document.getElementById("password").value.trim();
     const errorMsg = document.getElementById("error-msg");
     const contactInfo = document.getElementById("contact-info");
 
-    if (input === "berbahagialah") {
-      audioOpener.pause();
-      audioOpener.currentTime = 0;
-      window.location.href = "surat.html";
-    } else {
+      if (input === "berbahagialah") {
+  audioOpener.pause();
+  audioOpener.currentTime = 0;
+
+  // Cek apakah user masih landscape
+  if (window.innerWidth > window.innerHeight) {
+    alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
+    return;
+  }
+
+  window.location.href = "surat.html";
+      }
+     
+      else {
       errorMsg.innerHTML = "Silakan masukkan kata sandi yang benar.";
       contactInfo.style.display = "block";
     }
