@@ -88,5 +88,17 @@
     }, 30000);
   </script>
 
+  <script>
+  function checkPortraitRedirect() {
+    if (window.innerHeight > window.innerWidth) {
+      window.location.href = "surat.html";
+    }
+  }
+
+  window.addEventListener("load", checkPortraitRedirect);
+  window.addEventListener("resize", checkPortraitRedirect);
+  window.addEventListener("orientationchange", checkPortraitRedirect);
+  </script>
+  
 </body>
 </html>
