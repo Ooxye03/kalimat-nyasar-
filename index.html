@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Untuk Kamu, yang Pernah Bertahan</title>
+  <meta name="description" content="Ulang tahunmu kali ini berbeda. Ada yang menunggu di akhir… hanya jika kamu siap menerimanya.">
+  <meta property="og:title" content="Untuk Kamu, yang Pernah Bertahan" />
+  <meta property="og:description" content="Ulang tahunmu kali ini berbeda. Ada yang menunggu di akhir… hanya jika kamu siap menerimanya." />
+  <meta property="og:image" content="assets/share-preview.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourvercel.vercel.app/" />
+  <meta name="theme-color" content="#f3c6c6" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #loading-spinner {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #f3c6c6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+#loading-spinner.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+    
+    #video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 99;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #video-overlay video {
+      width: 100%;
+      min-height: 100vh;
+      object-fit: cover;
+      position: relative;
+    }
+
+    #start-screen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+    }
+
+    #form-phase {
+      display: none;
+      text-align: center;
+      padding: 2em;
+    }
+
+    #landscape-warning {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2em;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADING SPINNER -->
+<div id="loading-spinner">
+  <img src="assets/loading.svg" alt="Loading..." />
+</div>
+  
+  <!-- Warning Landscape -->
+  <div id="landscape-warning">
+    <img src="assets/logo-animasi.gif" alt="Rotate Your Phone" />
+    <p>Silakan putar HP kamu ke posisi <strong>landscape</strong> untuk memulai 🎥</p>
+  </div>
+
+  <!-- Video Opening -->
+  <div id="video-overlay">
+    <video id="intro-video" playsinline muted>
+      <source src="assets/video.mp4" type="video/mp4" />
+    </video>
+    <div id="start-screen">
+      <h2>Tap untuk mulai 🎬</h2>
+      <button id="play-btn">▶️ Putar</button>
+    </div>
+  </div>
+
+  <!-- Form Input -->
+  <div id="form-phase">
+    <h2>Masukkan Namamu & Tanggal Lahir</h2>
+    <input type="text" id="name" placeholder="Nama Kamu" required />
+    <input type="date" id="dob" required />
+    <br />
+    <button type="button" onclick="checkBirthday()">Lanjut ➤</button>
+  </div>
+
+  <script>
+    function detectOrientation() {
+      const isPortrait = window.innerHeight > window.innerWidth;
+      if (isPortrait) {
+        document.getElementById("landscape-warning").style.display = "flex";
+        document.getElementById("video-overlay").style.display = "none";
+        document.getElementById("form-phase").style.display = "none";
+      } else {
+        document.getElementById("landscape-warning").style.display = "none";
+        document.getElementById("video-overlay").style.display = "block";
+      }
+    }
+
+    window.addEventListener("resize", detectOrientation);
+    window.addEventListener("orientationchange", detectOrientation);
+    window.addEventListener("load", detectOrientation);
+
+    const playBtn = document.getElementById("play-btn");
+    const startScreen = document.getElementById("start-screen");
+    const videoOverlay = document.getElementById("video-overlay");
+    const video = document.getElementById("intro-video");
+
+    playBtn.addEventListener("click", () => {
+      startScreen.style.display = "none";
+      video.play();
+      video.muted = false;
+    });
+
+    video.addEventListener("ended", () => {
+      videoOverlay.remove();
+      document.getElementById("form-phase").style.display = "block";
+
+      // Reset body layout
+      document.body.style.height = "auto";
+      document.body.style.overflow = "auto";
+      document.body.style.display = "block";
+      document.body.style.justifyContent = "unset";
+      document.body.style.alignItems = "unset";
+    });
+
+    function checkBirthday() {
+      const name = document.getElementById("name").value.trim();
+      const birthDate = new Date(document.getElementById("dob").value);
+
+      if (!name || isNaN(birthDate)) {
+        alert("Nama dan tanggal lahir harus diisi ya!");
+        return;
+      }
+
+      const today = new Date();
+      const bdayThisYear = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+
+      if (today.getDate() === bdayThisYear.getDate() && today.getMonth() === bdayThisYear.getMonth()) {
+        localStorage.setItem("username", name);
+        localStorage.setItem("dob", birthDate.toISOString());
+        window.location.href = "rotate-to-portrait.html";
+      } else {
+        const nextBday = (today > bdayThisYear)
+          ? new Date(today.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate())
+          : bdayThisYear;
+
+        const diffTime = nextBday - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        alert(`Hmm… ulang tahun kamu masih ${diffDays} hari lagi 😢\n\nSampai hari itu tiba, kamu belum bisa lanjut ke bagian selanjutnya ya.\n\nTapi Rico doain yang terbaik buat kamu dari sekarang 🫶`);
+      }
+    }
+    
+    // Untuk menyembunyikan loading spinner saat halaman selesai dimuat
+window.addEventListener("load", function () {
+  const spinner = document.getElementById("loading-spinner");
+  if (spinner) {
+    spinner.classList.add("hide");
+    setTimeout(() => spinner.remove(), 800);
+  }
+});
+    
+  </script>
+</body>
+      </html>
+      
