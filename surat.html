@@ -320,6 +320,18 @@ Maaf karna Rico tidak bisa memberikan hal yang spesial untuk dirimu..`
 
   // Mulai slide pertama
   typeText(slides[0], "slide0");
+
+  function restartPage() {
+  localStorage.setItem("quizRefresh", "true");
+  location.reload();
+  }
+
+  // Auto-play ulang backsound jika reload via "Ulangi"
+if (localStorage.getItem("quizRefresh") === "true") {
+  localStorage.removeItem("quizRefresh");
+  document.getElementById("bgm").play();
+}
+
 </script>
 
 </body>
