@@ -63,12 +63,14 @@
     function redirectIfPortrait() {
       if (window.innerHeight > window.innerWidth) {
         const name = localStorage.getItem("username");
-        const dob = localStorage.getItem("dob");
-        if (name && dob) {
-          window.location.href = "surat.html";
-        } else {
-          window.location.href = "index.html";
-        }
+const dob = localStorage.getItem("dob");
+const pass = localStorage.getItem("pass"); // ✅ tambahkan ini
+
+if (name && dob && pass === "berbahagialah") {
+  window.location.href = "surat.html";
+} else {
+  window.location.href = "index.html";
+}
       }
     }
 
