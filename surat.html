@@ -369,6 +369,12 @@ Maaf karna Rico tidak bisa memberikan hal yang spesial untuk dirimu..`
   },
   // ... lanjut sampai 10 set quiz
 ];
+
+  // 🔊 Auto-play ulang backsound jika reload via "Ulangi"
+if (localStorage.getItem("quizRefresh") === "true") {
+  localStorage.removeItem("quizRefresh");
+  document.getElementById("bgm").play();
+}
   
 </script>
 
