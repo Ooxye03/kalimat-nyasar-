@@ -325,6 +325,8 @@ Maaf karna Rico tidak bisa memberikan hal yang spesial untuk dirimu..`
   typeText(slides[0], "slide0");
 
   function restartPage() {
+  // Set flag untuk menandai reload via "Ulangi"
+  localStorage.setItem("quizRefresh", "true");
   window.location.href = "surat.html";
   }
 
