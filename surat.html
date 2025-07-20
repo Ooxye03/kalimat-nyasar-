@@ -296,26 +296,29 @@ Maaf karna Rico tidak bisa memberikan hal yang spesial untuk dirimu..`
   }
 
   function nextSlide() {
-    document.querySelectorAll(".slide")[current].classList.remove("active");
-    current++;
-    const slidesAll = document.querySelectorAll(".slide");
+  document.querySelectorAll(".slide")[current].classList.remove("active");
+  current++;
+  const slidesAll = document.querySelectorAll(".slide");
 
-    if (current < slidesAll.length) {
-      const currentSlide = slidesAll[current];
-      currentSlide.classList.add("active");
-      nextBtn.classList.remove("show");
+  if (current < slidesAll.length) {
+    const currentSlide = slidesAll[current];
+    currentSlide.classList.add("active");
+    nextBtn.classList.remove("show");
 
-      if (current <= 8) {
-        typeText(slides[current], `slide${current}`);
-      } else if (current === 10) {
-        nextBtn.style.display = "none";
-      }
+    if (current <= 8) {
+      typeText(slides[current], `slide${current}`);
+    } else if (current === 9) {
+      // 🧠 Tambahkan fungsi render acak di sini
+      renderRandomQuiz();
+    } else if (current === 10) {
+      nextBtn.style.display = "none";
     }
   }
+  }
 
-  function answerQuiz() {
-    document.getElementById("quiz-response").innerHTML = "Hahaha… dasar kamu yaa 😤<br><br>Udah ah, salting Rico nanti 🫶";
-    document.getElementById("after-quiz").style.display = "block";
+  function answerQuiz(responseText) {
+  document.getElementById("quiz-response").innerHTML = responseText;
+  document.getElementById("after-quiz").style.display = "block";
   }
 
   // Mulai slide pertama
@@ -332,6 +335,38 @@ if (localStorage.getItem("quizRefresh") === "true") {
   document.getElementById("bgm").play();
 }
 
+  function renderRandomQuiz() {
+  const quiz = quizSets[Math.floor(Math.random() * quizSets.length)];
+  const slide9 = document.getElementById("slide9");
+  slide9.innerHTML = `
+    <div class="gif-container">
+      <img src="assets/ayunan.gif" alt="GIF" />
+    </div>
+    <p style="margin-top: 20px; font-size: 0.9em;">${quiz.question}</p>
+    ${quiz.options.map(opt => `<div class="quiz-option" onclick="answerQuiz('${opt.response}')">${opt.text}</div>`).join("")}
+    <p id="quiz-response" style="margin-top:20px; font-style: italic;"></p>
+    <div id="after-quiz" style="display:none;">
+      <button class="next-btn show" onclick="restartPage()">🔁 Ulangi</button>
+      <div id="social-icons">
+        <a href="https://wa.me/qr/VKPXEOZVLGRSE1" target="_blank"><img src="assets/wa.png" alt="WhatsApp"></a>
+        <a href="https://www.instagram.com/rcoerfn_" target="_blank"><img src="assets/ig.png" alt="Instagram"></a>
+      </div>
+    </div>
+  `;
+  }
+  
+  const quizSets = [
+  {
+    question: "Kenapa menurut kamu Rico sering nulis hal-hal aneh kayak gini?",
+    options: [
+      { text: "Karena Rico kepikiran terus sama seseorang", response: "Ketauan deh… iya, seringnya kamu yang muncul di kepala Rico 🙈" },
+      { text: "Karena Rico punya banyak waktu luang", response: "Waduh, jangan dibongkar dong rahasia produktivitas Rico 😅" },
+      { text: "Karena Rico suka nulis dan overthinking sendiri", response: "Hahaha, itu bener banget. Makanya ditumpahin lewat kata-kata begini 😌" }
+    ]
+  },
+  // ... lanjut sampai 10 set quiz
+];
+  
 </script>
 
 </body>
