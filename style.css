@@ -65,18 +65,6 @@ button {
   align-items: center;
 }
 
-@media screen and (orientation: portrait) {
-  #landscape-warning {
-    display: flex;
-  }
-
-  #start-screen,
-  #video-container,
-  #form-phase {
-    display: none !important;
-  }
-}
-
 /* Bunga jatuh */
 .flower {
   position: fixed;
