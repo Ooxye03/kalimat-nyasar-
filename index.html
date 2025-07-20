@@ -182,7 +182,17 @@
 
     // Cek apakah user masih landscape
     if (window.innerWidth > window.innerHeight) {
-      alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
+  alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
+
+  const checkPortrait = setInterval(() => {
+    if (window.innerHeight > window.innerWidth) {
+      clearInterval(checkPortrait);
+      window.location.href = "surat.html";
+    }
+  }, 500);
+
+  return;
+    }
 
       // Tunggu sampai orientasi berubah, baru arahkan ke surat
       window.addEventListener("orientationchange", () => {
