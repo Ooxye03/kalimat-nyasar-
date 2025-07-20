@@ -79,14 +79,17 @@
 </head>
 <body>
 
+<!-- Loading Spinner -->
 <div id="loading-spinner">
   <img src="assets/logo-animasi.gif" alt="Loading..." style="width: 80px;" />
 </div>
 
+<!-- Warning jika landscape -->
 <div id="landscape-warning">
   <img src="assets/logo-animasi.gif" alt="Rotate Icon" />
 </div>
 
+<!-- Video Intro -->
 <div id="video-overlay">
   <video id="intro-video" playsinline muted>
     <source src="assets/video.mp4" type="video/mp4" />
@@ -97,6 +100,7 @@
   </div>
 </div>
 
+<!-- Form Nama + Tanggal -->
 <div id="form-phase">
   <h2>Masukkan Namamu & Tanggal Lahir</h2>
   <input type="text" id="name" placeholder="Nama Kamu" required />
@@ -105,6 +109,7 @@
   <button type="button" onclick="goToPassword()">Lanjut ➤</button>
 </div>
 
+<!-- Password -->
 <div id="password-phase">
   <h2>Satu langkah lagi...</h2>
   <input type="password" id="password" placeholder="Masukkan kata sandi" />
@@ -129,126 +134,110 @@
   const audioOpener = document.getElementById("opener-audio");
 
   playBtn.addEventListener("click", () => {
-  startScreen.style.display = "none";
-  video.muted = false;
+    startScreen.style.display = "none";
+    video.muted = false;
 
-  video.play().then(() => {
-    // Mainkan audio setelah video berhasil diputar
-    setTimeout(() => {
-      audioOpener.play().catch(() => {
-        console.warn("Audio gagal play — user perlu interaksi lagi");
-      });
-    }, 1000);
-  }).catch(err => {
-    alert("Klik layarnya dulu supaya videonya bisa diputar 🎬");
-    console.warn("Video gagal play:", err);
+    video.play().then(() => {
+      setTimeout(() => {
+        audioOpener.play().catch(() => {
+          console.warn("Audio gagal play — user perlu interaksi lagi");
+        });
+      }, 1000);
+    }).catch(err => {
+      alert("Klik layarnya dulu supaya videonya bisa diputar 🎬");
+      console.warn("Video gagal play:", err);
+    });
   });
-});
 
   video.addEventListener("ended", () => {
     document.getElementById("video-overlay").remove();
     formPhase.style.display = "block";
-    
+
     audioOpener.play().catch(() => {
-  console.warn("Autoplay musik gagal — menunggu interaksi dari user.");
-});
+      console.warn("Autoplay musik gagal — menunggu interaksi dari user.");
+    });
+  });
 
   function goToPassword() {
-  const name = document.getElementById("name").value.trim();
-  const dob = document.getElementById("dob").value;
+    const name = document.getElementById("name").value.trim();
+    const dob = document.getElementById("dob").value;
 
-  if (!name || !dob) {
-    alert("Nama dan tanggal lahir harus diisi!");
-    return;
-  }
+    if (!name || !dob) {
+      alert("Nama dan tanggal lahir harus diisi!");
+      return;
+    }
 
-  const today = new Date();
-  const inputDate = new Date(dob);
-  const bdayThisYear = new Date(today.getFullYear(), inputDate.getMonth(), inputDate.getDate());
+    const today = new Date();
+    const inputDate = new Date(dob);
+    const bdayThisYear = new Date(today.getFullYear(), inputDate.getMonth(), inputDate.getDate());
 
-  if (today.getDate() !== bdayThisYear.getDate() || today.getMonth() !== bdayThisYear.getMonth()) {
-    const nextBday = (today > bdayThisYear)
-      ? new Date(today.getFullYear() + 1, inputDate.getMonth(), inputDate.getDate())
-      : bdayThisYear;
-    const diffDays = Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
+    if (today.getDate() !== bdayThisYear.getDate() || today.getMonth() !== bdayThisYear.getMonth()) {
+      const nextBday = (today > bdayThisYear)
+        ? new Date(today.getFullYear() + 1, inputDate.getMonth(), inputDate.getDate())
+        : bdayThisYear;
+      const diffDays = Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
 
-    alert(`Hmm… ulang tahun kamu masih ${diffDays} hari lagi 😢\n\nSampai hari itu tiba, kamu belum bisa lanjut ke bagian selanjutnya ya.\n\nTapi Rico doain yang terbaik buat kamu dari sekarang 🫶`);
-    return;
-  }
+      alert(`Hmm… ulang tahun kamu masih ${diffDays} hari lagi 😢\n\nSampai hari itu tiba, kamu belum bisa lanjut ke bagian selanjutnya ya.\n\nTapi Rico doain yang terbaik buat kamu dari sekarang 🫶`);
+      return;
+    }
 
-  // ✅ Jika lolos validasi ulang tahun
-  localStorage.setItem("username", name);
-  localStorage.setItem("dob", inputDate.toISOString());
+    localStorage.setItem("username", name);
+    localStorage.setItem("dob", inputDate.toISOString());
 
-  formPhase.style.display = "none";
-  passwordPhase.style.display = "block";
+    formPhase.style.display = "none";
+    passwordPhase.style.display = "block";
   }
 
   function validatePassword() {
-  const input = document.getElementById("password").value.trim();
-  const errorMsg = document.getElementById("error-msg");
-  const contactInfo = document.getElementById("contact-info");
+    const input = document.getElementById("password").value.trim();
+    const errorMsg = document.getElementById("error-msg");
+    const contactInfo = document.getElementById("contact-info");
 
-  if (input === "berbahagialah") {
-  audioOpener.pause();
-  audioOpener.currentTime = 0;
-    
-window.addEventListener("resize", () => {
-  const isInPasswordPage = passwordPhase.style.display === "block";
-  const isPortrait = window.innerHeight > window.innerWidth;
+    if (input === "berbahagialah") {
+      audioOpener.pause();
+      audioOpener.currentTime = 0;
 
-  if (isInPasswordPage && isPortrait) {
-    window.location.href = "surat.html";
-  }
-});
-    
-  function checkPortraitAndRedirect() {
-    if (window.innerHeight > window.innerWidth) {
-      // MASIH LANDSCAPE
-      alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
-      const waitPortrait = setInterval(() => {
-        if (window.innerHeight > window.innerWidth) return;
+      if (window.innerWidth > window.innerHeight) {
+        alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
 
-        clearInterval(waitPortrait);
-        window.location.href = "surat.html";
-      }, 400);
-    } else {
-      // SUDAH PORTRAIT
+        const checkPortrait = setInterval(() => {
+          if (window.innerHeight > window.innerWidth) {
+            clearInterval(checkPortrait);
+            window.location.href = "surat.html";
+          }
+        }, 400);
+        return;
+      }
+
+      // Jika sudah portrait
       window.location.href = "surat.html";
+    } else {
+      errorMsg.innerHTML = "Silakan masukkan kata sandi yang benar.";
+      contactInfo.style.display = "block";
     }
   }
 
-  checkPortraitAndRedirect();
-} else {
-  errorMsg.innerHTML = "Silakan masukkan kata sandi yang benar.";
-  contactInfo.style.display = "block";
+  function checkOrientation() {
+    const warning = document.getElementById("landscape-warning");
+    const overlay = document.getElementById("video-overlay");
+
+    if (window.innerHeight > window.innerWidth) {
+      warning.style.display = "none";
+      overlay.style.display = "block";
+    } else {
+      warning.style.display = "flex";
+      overlay.style.display = "none";
+    }
   }
 
   window.addEventListener("load", () => {
     document.getElementById("loading-spinner").remove();
+    checkOrientation();
   });
-</script>
 
-  <script>
-  function checkOrientation() {
-  const warning = document.getElementById("landscape-warning");
-  const overlay = document.getElementById("video-overlay");
-
-  // MODE PORTRAIT
-  if (window.innerHeight > window.innerWidth) {
-    warning.style.display = "none";
-    overlay.style.display = "block";
-  } else {
-    // MODE LANDSCAPE
-    warning.style.display = "flex";
-    overlay.style.display = "none";
-  }
-  }
-    
-  window.addEventListener("load", checkOrientation);
   window.addEventListener("resize", checkOrientation);
   window.addEventListener("orientationchange", checkOrientation);
-  </script>
-  
+</script>
+
 </body>
 </html>
