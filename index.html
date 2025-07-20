@@ -219,18 +219,20 @@
 
   <script>
   function checkOrientation() {
-    const warning = document.getElementById("landscape-warning");
-    const overlay = document.getElementById("video-overlay");
+  const warning = document.getElementById("landscape-warning");
+  const overlay = document.getElementById("video-overlay");
 
-    if (window.innerWidth > window.innerHeight) {
-      warning.style.display = "none";
-      overlay.style.display = "block";
-    } else {
-      warning.style.display = "flex";
-      overlay.style.display = "none";
-    }
+  if (window.innerWidth > window.innerHeight) {
+    // 📱 Ini mode portrait: lanjut ke video
+    warning.style.display = "none";
+    overlay.style.display = "block";
+  } else {
+    // 🖥️ Ini mode landscape: tampilkan peringatan
+    warning.style.display = "flex";
+    overlay.style.display = "none";
   }
-
+  }
+    
   window.addEventListener("load", checkOrientation);
   window.addEventListener("resize", checkOrientation);
   window.addEventListener("orientationchange", checkOrientation);
