@@ -325,10 +325,39 @@ Maaf karna Rico tidak bisa memberikan hal yang spesial untuk dirimu..`
   typeText(slides[0], "slide0");
 
   function restartPage() {
-  localStorage.setItem("quizRefresh", "true");
-  location.reload();
+  current = 0;
+
+  // Acak ulang quiz kalau kamu mau
+  shuffleArray(quizSets); 
+
+  // Sembunyikan semua slide
+  document.querySelectorAll(".slide").forEach(slide => slide.classList.remove("active"));
+
+  // Tampilkan slide pertama
+  document.getElementById("slide0").classList.add("active");
+
+  // Bersihkan quiz sebelumnya
+  document.getElementById("quiz-response").innerHTML = "";
+  document.getElementById("after-quiz").style.display = "none";
+
+  // Tampilkan tombol lanjut
+  nextBtn.style.display = "block";
+  nextBtn.classList.remove("show");
+
+  // Mulai ketik ulang isi surat dari awal
+  typeText(slides[0], "slide0");
+
+  // Nyalakan musik
+  document.getElementById("bgm").play();
   }
 
+  function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  }
+  
   // Auto-play ulang backsound jika reload via "Ulangi"
 if (localStorage.getItem("quizRefresh") === "true") {
   localStorage.removeItem("quizRefresh");
