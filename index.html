@@ -222,12 +222,12 @@
   const warning = document.getElementById("landscape-warning");
   const overlay = document.getElementById("video-overlay");
 
-  if (window.innerWidth > window.innerHeight) {
-    // 📱 Ini mode portrait: lanjut ke video
+  // MODE PORTRAIT
+  if (window.innerHeight > window.innerWidth) {
     warning.style.display = "none";
     overlay.style.display = "block";
   } else {
-    // 🖥️ Ini mode landscape: tampilkan peringatan
+    // MODE LANDSCAPE
     warning.style.display = "flex";
     overlay.style.display = "none";
   }
