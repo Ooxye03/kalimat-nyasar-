@@ -65,27 +65,26 @@
         const name = localStorage.getItem("username");
         const dob = localStorage.getItem("dob");
         if (name && dob) {
-          window.location.href = "surat.html";
+          // Lanjut ke input password langsung
+          window.location.href = "index.html#password";
         } else {
           window.location.href = "index.html";
         }
       }
     }
 
-    // Saat orientasi berubah
     window.addEventListener("orientationchange", () => {
       setTimeout(redirectIfPortrait, 500);
     });
 
-    // Jaga-jaga kalau sudah portrait dari awal
     window.addEventListener("load", () => {
       redirectIfPortrait();
     });
 
-    // Pesan tambahan setelah 30 detik
+    // Pesan tambahan setelah 10 detik
     setTimeout(() => {
       notice.innerHTML = "Ih... kamu ngeyel ya? 😠<br>Rico marah nih, masa disuruh muter aja nggak mau? 😤<br>Tapi... ah yaudah, kamu tetep lucu sih 😌🖤";
-    }, 30000);
+    }, 10000);
   </script>
 
 </body>
