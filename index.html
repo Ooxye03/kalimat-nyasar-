@@ -163,12 +163,11 @@
     return;
   }
 
-  // ✅ Jika lolos validasi ulang tahun
+  // Simpan info user lalu arahkan ke halaman rotasi
   localStorage.setItem("username", name);
   localStorage.setItem("dob", inputDate.toISOString());
 
-  formPhase.style.display = "none";
-  passwordPhase.style.display = "block";
+  window.location.href = "rotate-to-portrait.html";
   }
 
   function validatePassword() {
@@ -206,8 +205,21 @@
   }
 
   window.addEventListener("load", () => {
-    document.getElementById("loading-spinner").remove();
-  });
+  if (window.location.hash === "#password") {
+    document.getElementById("video-overlay")?.remove();
+    document.getElementById("form-phase")?.remove();
+    document.getElementById("password-phase").style.display = "block";
+    const audio = document.getElementById("opener-audio");
+    if (audio) {
+      audio.play().catch(() => {});
+    }
+  }
+});
+
+window.addEventListener("load", () => {
+  document.getElementById("loading-spinner").remove();
+});
+  
 </script>
 
   <script>
