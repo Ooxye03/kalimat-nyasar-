@@ -144,9 +144,9 @@
     const name = document.getElementById("name").value.trim();
     const dob = document.getElementById("dob").value;
 
-    if (!name || !dob) {
-      alert("Nama dan tanggal lahir harus diisi!");
-      return;
+    if (name.length < 2) {
+  alert("Nama terlalu pendek, isi yang benar ya.");
+  return;
     }
 
     const today = new Date();
