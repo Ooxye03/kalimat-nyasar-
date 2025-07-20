@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preload" href="fonts/CafeMatcha.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
   <link rel="preload" href="assets/backsound.mp3" as="audio" />
+  <link rel="preload" href="assets/opener.mp3" as="audio" />
   <style>
     @font-face {
       font-family: 'CafeMatcha';
@@ -85,25 +86,15 @@
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     }
 
-    .quiz-option {
-      background: #fff;
-      border: 2px solid #f8bbd0;
-      margin: 10px;
-      padding: 10px;
-      border-radius: 12px;
+    .ulangi-btn {
+      margin-top: 30px;
+      background: #ffb6c1;
+      padding: 6px 16px;
+      font-size: 0.9em;
+      border-radius: 14px;
+      font-family: 'CafeMatcha';
       cursor: pointer;
-    }
-
-    #social-icons {
-      margin-top: 25px;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    #social-icons img {
-      width: 24px;
-      height: 24px;
+      border: none;
     }
   </style>
 </head>
@@ -112,6 +103,7 @@
 <div id="dark-overlay"></div>
 
 <audio autoplay loop id="bgm" src="assets/backsound.mp3"></audio>
+<audio id="opener" src="assets/opener.mp3"></audio>
 
 <div id="container">
   <div class="slide active" id="slide0"></div>
@@ -123,40 +115,26 @@
   <div class="slide" id="slide6"></div>
   <div class="slide" id="slide7"></div>
   <div class="slide" id="slide8"></div>
-  <div class="slide" id="slide9">
-  <div class="gif-container">
-    <img src="assets/ayunan.gif" alt="GIF" />
-  </div>
-  <p style="margin-top: 20px; font-size: 0.9em;">Mau main tebak-tebakan gak?</p>
 
-  <div id="quiz-choice">
-    <button onclick="skipQuiz()" class="next-btn show">gakk</button>
-    <button onclick="nextSlide()" class="next-btn show">mauu</button>
-  </div>
-  </div>
-  
-  <div class="slide" id="slide10">
-    <p>Kenapa langit selalu terlihat indah, tapi gak seindah kamu?</p>
-    <div class="quiz-option" onclick="answerQuiz()">Karena kamu senyumnya lebih cerah ☀️</div>
-    <div class="quiz-option" onclick="answerQuiz()">Karena kamu bikin aku nyaman 💖</div>
-    <div class="quiz-option" onclick="answerQuiz()">Karena kamu yang selalu aku cari 🌷</div>
-    <p id="quiz-response" style="margin-top:20px; font-style: italic;"></p>
-    <div id="after-quiz" style="display:none;">
-      <button class="next-btn show" onclick="location.reload()">🔁 Ulangi</button>
-      <div id="social-icons">
-        <a href="https://wa.me/qr/VKPXEOZVLGRSE1" target="_blank">
-          <img src="assets/wa.png" alt="WhatsApp">
-        </a>
-        <a href="https://www.instagram.com/rcoerfn_" target="_blank">
-          <img src="assets/ig.png" alt="Instagram">
-        </a>
-      </div>
+  <!-- Slide 9: GIF & Kalimat manis -->
+  <div class="slide" id="slide9">
+    <div class="gif-container">
+      <img src="assets/ayunan.gif" alt="GIF" />
     </div>
+    <p style="margin-top: 20px; font-size: 0.9em;">
+      Aku sih sebenernya pengen nyiapin game… tapi kamu sendiri udah jadi kejutan terindahnya 🫶
+    </p>
+    <button class="next-btn show" onclick="nextSlide()">Lanjut ➤</button>
+  </div>
+
+  <!-- Slide 10: Penutup -->
+  <div class="slide" id="slide10">
+    <p>Selesai dehh...<br>Gak terasa ya...<br>waktu secepat ini berjalan 🥲</p>
+    <button class="ulangi-btn" onclick="location.reload()">🔁 Ulangi</button>
   </div>
 </div>
 
 <button class="next-btn" id="nextBtn" onclick="nextSlide()">Lanjut ➤</button>
-
 <script>
   const name = localStorage.getItem("username");
   const dob = localStorage.getItem("dob");
@@ -307,15 +285,19 @@ Maaf karna Rico tidak bisa memberikan hal yang spesial untuk dirimu..`
 
       if (current <= 8) {
         typeText(slides[current], `slide${current}`);
-      } else if (current === 10) {
+      }
+
+      if (current === 9) {
+        const bgm = document.getElementById("bgm");
+        const opener = document.getElementById("opener");
+        bgm.pause();
+        opener.play();
+      }
+
+      if (current === 10) {
         nextBtn.style.display = "none";
       }
     }
-  }
-
-  function answerQuiz() {
-    document.getElementById("quiz-response").innerHTML = "Hahaha… dasar kamu yaa 😤<br><br>Udah ah, salting Rico nanti 🫶";
-    document.getElementById("after-quiz").style.display = "block";
   }
 
   // Mulai slide pertama
