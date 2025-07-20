@@ -7,6 +7,23 @@
   <meta name="theme-color" content="#f3c6c6" />
   <link rel="stylesheet" href="style.css" />
   <style>
+
+    .fade-in {
+  opacity: 0;
+  animation: fadeInForm 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeInForm {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+    
     #loading-spinner {
       position: fixed;
       top: 0; left: 0;
@@ -103,7 +120,7 @@
     transform: translateY(0);
   }
 }
-    
+
   </style>
 </head>
 <body class="index">
@@ -166,6 +183,7 @@
   video.addEventListener("ended", () => {
     document.getElementById("video-overlay").remove();
     formPhase.style.display = "block";
+formPhase.classList.add("fade-in");
     audioOpener.play();
   });
 
@@ -259,6 +277,6 @@
   window.addEventListener("resize", checkOrientation);
   window.addEventListener("orientationchange", checkOrientation);
 </script>
-
+  
 </body>
 </html>
