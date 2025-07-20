@@ -172,38 +172,34 @@
   }
 
   function validatePassword() {
-    window.addEventListener("orientationchange", () => {
-  const username = localStorage.getItem("username");
-  const dob = localStorage.getItem("dob");
-  const input = document.getElementById("password")?.value?.trim();
+  const input = document.getElementById("password").value.trim();
+  const errorMsg = document.getElementById("error-msg");
+  const contactInfo = document.getElementById("contact-info");
 
-  if (username && dob && input === "berbahagialah" && window.innerHeight > window.innerWidth) {
-    window.location.href = "rotate-to-portrait.html";
-  }
-});
-    
-    const input = document.getElementById("password").value.trim();
-    const errorMsg = document.getElementById("error-msg");
-    const contactInfo = document.getElementById("contact-info");
+  if (input === "berbahagialah") {
+    audioOpener.pause();
+    audioOpener.currentTime = 0;
 
-      if (input === "berbahagialah") {
-        localStorage.setItem("pass", "berbahagialah");
-  audioOpener.pause();
-  audioOpener.currentTime = 0;
+    // Cek apakah user masih landscape
+    if (window.innerWidth > window.innerHeight) {
+      alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
 
-  // Cek apakah user masih landscape
-  if (window.innerWidth > window.innerHeight) {
-    alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
-    return;
-  }
+      // Tunggu sampai orientasi berubah, baru arahkan ke surat
+      window.addEventListener("orientationchange", () => {
+        if (window.innerHeight > window.innerWidth) {
+          window.location.href = "surat.html";
+        }
+      });
 
-  window.location.href = "surat.html";
-      }
-     
-      else {
-      errorMsg.innerHTML = "Silakan masukkan kata sandi yang benar.";
-      contactInfo.style.display = "block";
+      return;
     }
+
+    // Kalau sudah potret, langsung lanjut
+    window.location.href = "surat.html";
+  } else {
+    errorMsg.innerHTML = "Silakan masukkan kata sandi yang benar.";
+    contactInfo.style.display = "block";
+  }
   }
 
   window.addEventListener("load", () => {
