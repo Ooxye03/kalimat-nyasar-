@@ -131,9 +131,17 @@
   playBtn.addEventListener("click", () => {
   startScreen.style.display = "none";
   video.muted = false;
-  video.play().catch(err => {
-    alert("Klik dulu layarnya supaya video bisa diputar 🎬");
-    console.warn("Video gagal diputar:", err);
+
+  video.play().then(() => {
+    // Mainkan audio setelah video berhasil diputar
+    setTimeout(() => {
+      audioOpener.play().catch(() => {
+        console.warn("Audio gagal play — user perlu interaksi lagi");
+      });
+    }, 1000);
+  }).catch(err => {
+    alert("Klik layarnya dulu supaya videonya bisa diputar 🎬");
+    console.warn("Video gagal play:", err);
   });
 });
 
@@ -184,7 +192,16 @@
   if (input === "berbahagialah") {
   audioOpener.pause();
   audioOpener.currentTime = 0;
+    
+window.addEventListener("resize", () => {
+  const isInPasswordPage = passwordPhase.style.display === "block";
+  const isPortrait = window.innerHeight > window.innerWidth;
 
+  if (isInPasswordPage && isPortrait) {
+    window.location.href = "surat.html";
+  }
+});
+    
   function checkPortraitAndRedirect() {
     if (window.innerHeight > window.innerWidth) {
       // MASIH LANDSCAPE
