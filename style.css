@@ -66,13 +66,13 @@ button {
 }
 
 @media screen and (orientation: portrait) {
-  #landscape-warning {
+  body.index #landscape-warning {
     display: flex;
   }
 
-  #start-screen,
-  #video-container,
-  #form-phase {
+  body.index #start-screen,
+  body.index #video-container,
+  body.index #form-phase {
     display: none !important;
   }
 }
