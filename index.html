@@ -180,32 +180,27 @@
     audioOpener.pause();
     audioOpener.currentTime = 0;
 
-    // Cek apakah user masih landscape
+    // Jika masih dalam mode landscape
     if (window.innerWidth > window.innerHeight) {
-  alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
+      alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
 
-  const checkPortrait = setInterval(() => {
-    if (window.innerHeight > window.innerWidth) {
-      clearInterval(checkPortrait);
-      window.location.href = "surat.html";
-    }
-  }, 500);
-
-  return;
-    }
-
-      // Tunggu sampai orientasi berubah, baru arahkan ke surat
-      window.addEventListener("orientationchange", () => {
+      const waitPortrait = setInterval(() => {
         if (window.innerHeight > window.innerWidth) {
-          window.location.href = "surat.html";
+          // Masih landscape
+          return;
         }
-      });
+
+        // Sudah portrait
+        clearInterval(waitPortrait);
+        window.location.href = "surat.html";
+      }, 500);
 
       return;
     }
 
-    // Kalau sudah potret, langsung lanjut
+    // Sudah portrait langsung lanjut
     window.location.href = "surat.html";
+
   } else {
     errorMsg.innerHTML = "Silakan masukkan kata sandi yang benar.";
     contactInfo.style.display = "block";
