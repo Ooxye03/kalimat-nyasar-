@@ -129,16 +129,21 @@
   const audioOpener = document.getElementById("opener-audio");
 
   playBtn.addEventListener("click", () => {
-    startScreen.style.display = "none";
-    video.play();
-    video.muted = false;
+  startScreen.style.display = "none";
+  video.muted = false;
+  video.play().catch(err => {
+    alert("Klik dulu layarnya supaya video bisa diputar 🎬");
+    console.warn("Video gagal diputar:", err);
   });
+});
 
   video.addEventListener("ended", () => {
     document.getElementById("video-overlay").remove();
     formPhase.style.display = "block";
-    audioOpener.play();
-  });
+    
+    audioOpener.play().catch(() => {
+  console.warn("Autoplay musik gagal — menunggu interaksi dari user.");
+});
 
   function goToPassword() {
   const name = document.getElementById("name").value.trim();
