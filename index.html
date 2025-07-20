@@ -177,34 +177,29 @@
   const contactInfo = document.getElementById("contact-info");
 
   if (input === "berbahagialah") {
-    audioOpener.pause();
-    audioOpener.currentTime = 0;
+  audioOpener.pause();
+  audioOpener.currentTime = 0;
 
-    // Jika masih dalam mode landscape
-    if (window.innerWidth > window.innerHeight) {
+  function checkPortraitAndRedirect() {
+    if (window.innerHeight > window.innerWidth) {
+      // MASIH LANDSCAPE
       alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
-
       const waitPortrait = setInterval(() => {
-        if (window.innerHeight > window.innerWidth) {
-          // Masih landscape
-          return;
-        }
+        if (window.innerHeight > window.innerWidth) return;
 
-        // Sudah portrait
         clearInterval(waitPortrait);
         window.location.href = "surat.html";
-      }, 500);
-
-      return;
+      }, 400);
+    } else {
+      // SUDAH PORTRAIT
+      window.location.href = "surat.html";
     }
-
-    // Sudah portrait langsung lanjut
-    window.location.href = "surat.html";
-
-  } else {
-    errorMsg.innerHTML = "Silakan masukkan kata sandi yang benar.";
-    contactInfo.style.display = "block";
   }
+
+  checkPortraitAndRedirect();
+} else {
+  errorMsg.innerHTML = "Silakan masukkan kata sandi yang benar.";
+  contactInfo.style.display = "block";
   }
 
   window.addEventListener("load", () => {
