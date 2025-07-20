@@ -77,8 +77,8 @@
     }
   </style>
 </head>
-<body>
 <body class="index">
+
 <div id="loading-spinner">
   <img src="assets/logo-animasi.gif" alt="Loading..." style="width: 80px;" />
 </div>
@@ -141,91 +141,81 @@
   });
 
   function goToPassword() {
-  const name = document.getElementById("name").value.trim();
-  const dob = document.getElementById("dob").value;
+    const name = document.getElementById("name").value.trim();
+    const dob = document.getElementById("dob").value;
 
-  if (!name || !dob) {
-    alert("Nama dan tanggal lahir harus diisi!");
-    return;
-  }
+    if (!name || !dob) {
+      alert("Nama dan tanggal lahir harus diisi!");
+      return;
+    }
 
-  const today = new Date();
-  const inputDate = new Date(dob);
-  const bdayThisYear = new Date(today.getFullYear(), inputDate.getMonth(), inputDate.getDate());
+    const today = new Date();
+    const inputDate = new Date(dob);
+    const bdayThisYear = new Date(today.getFullYear(), inputDate.getMonth(), inputDate.getDate());
 
-  if (today.getDate() !== bdayThisYear.getDate() || today.getMonth() !== bdayThisYear.getMonth()) {
-    const nextBday = (today > bdayThisYear)
-      ? new Date(today.getFullYear() + 1, inputDate.getMonth(), inputDate.getDate())
-      : bdayThisYear;
-    const diffDays = Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
+    if (today.getDate() !== bdayThisYear.getDate() || today.getMonth() !== bdayThisYear.getMonth()) {
+      const nextBday = (today > bdayThisYear)
+        ? new Date(today.getFullYear() + 1, inputDate.getMonth(), inputDate.getDate())
+        : bdayThisYear;
+      const diffDays = Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
 
-    alert(`Hmm… ulang tahun kamu masih ${diffDays} hari lagi 😢\n\nSampai hari itu tiba, kamu belum bisa lanjut ke bagian selanjutnya ya.\n\nTapi Rico doain yang terbaik buat kamu dari sekarang 🫶`);
-    return;
-  }
+      alert(`Hmm… ulang tahun kamu masih ${diffDays} hari lagi 😢\n\nSampai hari itu tiba, kamu belum bisa lanjut ke bagian selanjutnya ya.\n\nTapi Rico doain yang terbaik buat kamu dari sekarang 🫶`);
+      return;
+    }
 
-  // Simpan info user lalu arahkan ke halaman rotasi
-  localStorage.setItem("username", name);
-  localStorage.setItem("dob", inputDate.toISOString());
-
-  window.location.href = "rotate-to-portrait.html";
+    localStorage.setItem("username", name);
+    localStorage.setItem("dob", inputDate.toISOString());
+    window.location.href = "rotate-to-portrait.html";
   }
 
   function validatePassword() {
-    window.addEventListener("orientationchange", () => {
-  const username = localStorage.getItem("username");
-  const dob = localStorage.getItem("dob");
-  const input = document.getElementById("password")?.value?.trim();
-
-  if (username && dob && input === "berbahagialah" && window.innerHeight > window.innerWidth) {
-    window.location.href = "surat.html";
-  }
-});
-    
     const input = document.getElementById("password").value.trim();
     const errorMsg = document.getElementById("error-msg");
     const contactInfo = document.getElementById("contact-info");
 
-      if (input === "berbahagialah") {
-  audioOpener.pause();
-  audioOpener.currentTime = 0;
+    if (input === "berbahagialah") {
+      audioOpener.pause();
+      audioOpener.currentTime = 0;
 
-  // Cek apakah user masih landscape
-  if (window.innerWidth > window.innerHeight) {
-    alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
-    return;
-  }
+      // Hapus warning landscape agar tidak muncul lagi
+      const warning = document.getElementById("landscape-warning");
+      if (warning) warning.remove();
 
-  window.location.href = "surat.html";
+      if (window.innerWidth > window.innerHeight) {
+        alert("Putar layar ke mode potret dulu ya, biar lebih nyaman baca suratnya 💌");
+        return;
       }
-     
-      else {
+
+      window.location.href = "surat.html";
+    } else {
       errorMsg.innerHTML = "Silakan masukkan kata sandi yang benar.";
       contactInfo.style.display = "block";
     }
   }
 
   window.addEventListener("load", () => {
-  if (window.location.hash === "#password") {
-    document.getElementById("video-overlay")?.remove();
-    document.getElementById("form-phase")?.remove();
-    document.getElementById("password-phase").style.display = "block";
-    const audio = document.getElementById("opener-audio");
-    if (audio) {
-      audio.play().catch(() => {});
+    if (window.location.hash === "#password") {
+      document.getElementById("video-overlay")?.remove();
+      document.getElementById("form-phase")?.remove();
+      document.getElementById("password-phase").style.display = "block";
+      const audio = document.getElementById("opener-audio");
+      if (audio) {
+        audio.play().catch(() => {});
+      }
+
+      // Tambahan: hapus warning saat masuk via #password
+      const warning = document.getElementById("landscape-warning");
+      if (warning) warning.remove();
     }
-  }
-});
 
-window.addEventListener("load", () => {
-  document.getElementById("loading-spinner").remove();
-});
-  
-</script>
+    document.getElementById("loading-spinner").remove();
+  });
 
-  <script>
   function checkOrientation() {
     const warning = document.getElementById("landscape-warning");
     const overlay = document.getElementById("video-overlay");
+
+    if (!overlay || !warning) return;
 
     if (window.innerWidth > window.innerHeight) {
       warning.style.display = "none";
@@ -239,7 +229,7 @@ window.addEventListener("load", () => {
   window.addEventListener("load", checkOrientation);
   window.addEventListener("resize", checkOrientation);
   window.addEventListener("orientationchange", checkOrientation);
-  </script>
-  
+</script>
+
 </body>
 </html>
