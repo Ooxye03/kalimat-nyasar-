@@ -317,8 +317,16 @@ Maaf karna Rico tidak bisa memberikan hal yang spesial untuk dirimu..`
   }
 
   function answerQuiz(responseText) {
+  if (document.getElementById("quiz-response").innerText !== "") return;
+
   document.getElementById("quiz-response").innerHTML = responseText;
   document.getElementById("after-quiz").style.display = "block";
+
+  // Disable all options
+  document.querySelectorAll(".quiz-option").forEach(opt => {
+    opt.style.pointerEvents = "none";
+    opt.style.opacity = "0.6";
+  });
   }
 
   // Mulai slide pertama
@@ -327,6 +335,7 @@ Maaf karna Rico tidak bisa memberikan hal yang spesial untuk dirimu..`
   function restartPage() {
   // Set flag untuk menandai reload via "Ulangi"
   localStorage.setItem("quizRefresh", "true");
+    window.scrollTo(0, 0);
   window.location.href = "surat.html";
   }
 
